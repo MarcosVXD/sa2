@@ -18,41 +18,63 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      home: const Tela1(),
+      home: const CadastroPage(),
     );
   }
 }
 
-class Tela1 extends StatelessWidget {
-  const Tela1({super.key});
+class CadastroPage extends StatefulWidget {
+  const CadastroPage({super.key});
+
+  @override
+  State<CadastroPage> createState() => _CadastroPageState();
+}
+
+class _CadastroPageState extends State<CadastroPage> {
+  final nomeController = TextEditingController();
+  final cidadeController = TextEditingController();
+
+  void abrirResumo() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ResumoPage(
+          nome: nomeController.text,
+          cidade: cidadeController.text,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tela 1'),
+        title: const Text('Cadastro de Cliente'),
       ),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Bem-vindo',
-              style: TextStyle(
-                fontSize: 24,
+            TextField(
+              controller: nomeController,
+              decoration: const InputDecoration(
+                labelText: 'Nome',
+                border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
+            TextField(
+              controller: cidadeController,
+              decoration: const InputDecoration(
+                labelText: 'Cidade',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const Tela2(),
-                  ),
-                );
-              },
-              child: const Text('Entrar'),
+              onPressed: abrirResumo,
+              child: const Text('Cadastrar'),
             ),
           ],
         ),
@@ -61,32 +83,97 @@ class Tela1 extends StatelessWidget {
   }
 }
 
-class Tela2 extends StatelessWidget {
-  const Tela2({super.key});
+class ResumoPage extends StatelessWidget {
+  final String nome;
+  final String cidade;
+
+  const ResumoPage({
+    super.key,
+    required this.nome,
+    required this.cidade,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tela 2'),
+        title: const Text('Resumo'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Dados cadastrados:',
+              style: TextStyle(
+                fontSize: 22,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Nome: $nome',
+              style: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              'Cidade: $cidade',
+              style: const TextStyle(
+                fontSize: 18,
+              ),
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const PerfilPage(),
+                  ),
+                );
+              },
+              child: const Text('Ver perfil'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class PerfilPage extends StatelessWidget {
+  const PerfilPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Perfil do Usuário'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Você entrou no sistema!',
-              style: TextStyle(
-                fontSize: 20,
-              ),
-              textAlign: TextAlign.center,
+            Image.asset(
+              'assets/perfil.jpg',
+              width: 150,
+              height: 150,
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Voltar'),
+            const Text(
+              'Marcos Vinícius',
+              style: TextStyle(
+                fontSize: 24,
+              ),
+            ),
+            const SizedBox(height: 10),
+            const Text(
+              'Desenvolvedor',
+              style: TextStyle(
+                fontSize: 18,
+              ),
             ),
           ],
         ),
